@@ -57,14 +57,13 @@ func appMetaGetHandlerFunc(store *Store) http.HandlerFunc {
 		defer encoder.Close()
 
 		matcher := matcherFromParams(r.URL.Query())
-		for _, app := range store.Search(matcher) {
+		store.Search(matcher, func(app App) {
 			if err := encoder.Encode(&app); err != nil {
 				// YAML serialization should always succeed,
 				// so this is very likely an error from http.ResponseWriter.
 				log.Printf("Error writing YAML response: %s\n", err)
-				return
 			}
-		}
+		})
 	}
 }
 

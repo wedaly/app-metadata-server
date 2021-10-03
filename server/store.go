@@ -18,18 +18,15 @@ func (s *Store) Insert(app App) {
 	s.mu.Unlock()
 }
 
-// Search retrieves all app metadata records selected by the matcher function.
-// The results are copied into a new slice that is safe for the caller to read.
-// The caller should NOT modify the contents of the slice (in particular,
-// other goroutines might be reading entries in the Maintainers slice).
-func (s *Store) Search(m Matcher) []App {
+// Search finds all app metadata records selected by the matcher function.
+// The function f should NOT modify the app record (in particular, other
+// goroutines might be reading entries in the Maintainers slice).
+func (s *Store) Search(m Matcher, f func(App)) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	var results []App
 	for _, app := range s.apps {
 		if m(app) {
-			results = append(results, app)
+			f(app)
 		}
 	}
-	return results
 }

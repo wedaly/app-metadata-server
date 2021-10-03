@@ -60,7 +60,10 @@ func TestStoreInsertAndSearch(t *testing.T) {
 			for _, app := range tc.apps {
 				store.Insert(app)
 			}
-			results := store.Search(tc.matcher)
+			var results []App
+			store.Search(tc.matcher, func(app App) {
+				results = append(results, app)
+			})
 			assert.Equal(t, tc.expected, results)
 		})
 	}
@@ -141,7 +144,7 @@ func BenchmarkSearch(b *testing.B) {
 			m := MatchExactTitle("selected")
 			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
-				store.Search(m)
+				store.Search(m, func(App) {})
 			}
 		})
 	}
