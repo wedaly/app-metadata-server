@@ -22,7 +22,7 @@ curl "http://localhost:8000/apps?title=Valid%20App%201"
 curl "http://localhost:8000/apps?title=Valid%20App%201&version=0.0.1"
 
 # Filter by description substring match
-curl "https://localhost:8000/apps?descriptionContains=Interesting"
+curl "http://localhost:8000/apps?descriptionContains=Interesting"
 ```
 
 To run the test suite:
