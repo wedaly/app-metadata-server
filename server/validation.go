@@ -1,7 +1,6 @@
 package server
 
 import (
-	"errors"
 	"fmt"
 	"net/mail"
 	"net/url"
@@ -14,7 +13,7 @@ type ValidationErrors []error
 
 // Append adds a new validation error to the set.
 func (ves *ValidationErrors) Append(fieldName, errorMsg string) {
-	err := errors.New(fmt.Sprintf("%s: %s", fieldName, errorMsg))
+	err := fmt.Errorf("%s: %s", fieldName, errorMsg)
 	*ves = append(*ves, err)
 }
 
